@@ -1,6 +1,6 @@
-# nuxt
+# vue-components
 
-> My pioneering Nuxt.js project
+> 一个vue组件库
 
 ## Build Setup
 
@@ -21,4 +21,13 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
 
-my/singletask 上传图片添加确认弹窗
+> 组件开箱即用，收集了一部分工作中使用到的用vue编写的插件。
+
+> 组件多源自日常工作，所以对版本会有所依赖，采用了固定版本的做法，使用时如果出错注意对照版本号。
+
+> 随便用。
+
+# 欢迎捐赠
+
+![二维码]('./static/pay.jpg')
+
