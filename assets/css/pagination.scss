@@ -1,0 +1,9 @@
+.pagination-grey {
+  .el-pager{
+    li:not(.disable).active{background-color:#fed02f !important;
+    }
+    li:not(.active) {
+      &:hover{color: #fed02f !important;}
+    }
+  }
+}
