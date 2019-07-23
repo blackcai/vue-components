@@ -80,7 +80,7 @@
               <el-table-column type="index"></el-table-column>
               <el-table-column v-for="(item, index) in specList" :key="index" :label="item.name">
                 <template slot-scope="scope">
-                  {{ getSpecAttr(index, scope.$index)['value'] }}{{ getSpecAttr(index, scope.$index)['id'] }}
+                  {{ getSpecAttr(index, scope.$index)['value'] }}-{{ getSpecAttr(index, scope.$index)['id'] }}
                 </template>
               </el-table-column>
               <el-table-column label="图片">
