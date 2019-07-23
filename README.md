@@ -29,5 +29,5 @@ For detailed explanation on how things work, checkout [Nuxt.js docs](https://nux
 
 # 欢迎捐赠
 
-![二维码]('./static/pay.jpg')
+![二维码](/static/pay.jpg)
 
