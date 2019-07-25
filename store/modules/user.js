@@ -1,11 +1,18 @@
-const user = {
-  state: {
+export const state = () => ({
+  list: []
+})
+
+export const mutations = {
+  add (state, text) {
+    state.list.push({
+      text: text,
+      done: false
+    })
   },
-  mutations: {
-  
+  remove (state, { todo }) {
+    state.list.splice(state.list.indexOf(todo), 1)
   },
-  actions: {
+  toggle (state, todo) {
+    todo.done = !todo.done
   }
 }
-
-export default user
