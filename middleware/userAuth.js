@@ -14,7 +14,6 @@ export default function({ route, redirect, store }) {
     // }
     // 在客户端判读是否需要登录
     token = getToken()
-    console.log(token, 'userAuth')
     path = route.path
     if (path) {
       redirectURL = '/login' // ?ref=' + encodeURIComponent(path)
