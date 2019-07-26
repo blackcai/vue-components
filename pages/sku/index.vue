@@ -34,7 +34,7 @@
           <div class="">
             <el-card>
               <div slot="header" class="clearfix">
-                <span>规格信息</span>
+                <span>规格信息</span><el-button size="mini" @click="initData" type="primary">生成规格</el-button>
               </div>
               <el-card class="box-card" v-for="(item, index) in this.specList" :key="index">
                 <div slot="header" class="clearfix">
@@ -176,8 +176,8 @@
         },
         addItem: { // 添加栏规格
           add: false, // 是否添加状态
-          name: '颜色', // 规格名
-          value: '黄色' // 规格值
+          name: '', // 规格名
+          value: '' // 规格值
         },
         childItem: [], // 添加已有的规格子类输入框
         defaultData: { // 统一设置信息
@@ -199,7 +199,6 @@
       }
     },
     created() {
-      this.initData()
     },
     methods: {
       // 模拟后台保存数据
@@ -259,6 +258,11 @@
       initData() {
         // 添加第一条数据
         setTimeout(() => {
+          this.addItem = { // 添加栏规格
+            add: false, // 是否添加状态
+            name: '颜色', // 规格名
+            value: '黄色' // 规格值
+          }
           this.addSpec()
         }, 1000)
         setTimeout(() => {
