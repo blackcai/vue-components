@@ -1,65 +1,54 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="24">
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>组件类</span>
-          </div>
-          一些简单的插件。
-          </el-card>
-      </el-col>
-      <el-col :span="4">
-        <el-card shadow="hover">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-          <div style="padding: 14px;">
-            <span>一个简易实用的商品sku添加组件</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button" @click="goUrl('sku')">查看</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="4">
-        <el-card shadow="hover">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-          <div style="padding: 14px;">
-            <span>另一个简易实用的商品sku添加组件</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button" @click="goUrl('sku2')">查看</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
+      <el-col :span="12" class="text-left"></el-col>
+      <el-col :span="12" class="text-right"></el-col>
     </el-row>
-    <el-row>
-      <el-col :span="24">
-        <div slot="header" class="clearfix">
-          <span>功能类</span>
+    <div class="">
+      <el-card shadow="always">
+          <div>一个简易实用的商品sku添加组件</div>
+        <div>
+          <a href="https://gitee.com/mymcode/vue-component/tree/develop/pages/sku" target="_blank">https://gitee.com/mymcode/vue-component/tree/develop/pages/sku</a>
         </div>
-        <el-card>实用功能</el-card>
-      </el-col>
-      <el-col :span="4">
-        <el-card shadow="hover">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-          <div style="padding: 14px;">
-            <span>随机密码生成</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button" @click="goUrl('random')">查看</el-button>
-            </div>
+          <div class="bottom clearfix">
+            <time class="time">{{ currentDate }}</time>
+            <el-button type="text" class="button" @click="goUrl('sku')">查看</el-button>
           </div>
-        </el-card>
-      </el-col>
-    </el-row>
+      </el-card>
+
+      <el-card shadow="always">
+        <div>
+          <div>另一个简易实用的商品sku添加组件<el-tag size="mini">转载</el-tag></div>
+          <div>
+            <a href="https://github.com/rossroma/vue-sku" target="_blank">https://github.com/rossroma/vue-sku</a>
+          </div>
+          <div class="bottom clearfix">
+            <time class="time">{{ currentDate }}</time>
+            <el-button type="text" class="button" @click="goUrl('sku2')">查看</el-button>
+          </div>
+        </div>
+      </el-card>
+
+      <el-card shadow="always">
+        <div>
+          <div>随机密码生成</div>
+          <div>
+            <a href="https://gitee.com/mymcode/vue-component/tree/develop/pages/random" target="_blank">https://gitee.com/mymcode/vue-component/tree/develop/pages/random</a>
+          </div>
+          <div class="bottom clearfix">
+            <time class="time">{{ currentDate }}</time>
+            <el-button type="text" class="button" @click="goUrl('random')">查看</el-button>
+          </div>
+        </div>
+      </el-card>
+    </div>
   </section>
 </template>
 
 <script>
   export default {
     name: 'vue-component',
+    layout: 'bar',
     data() {
       return {
         currentDate: '2019-7-23'

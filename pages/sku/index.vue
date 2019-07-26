@@ -3,7 +3,7 @@
     <el-card>
       <el-card>
         <el-radio-group v-model="moreSpec">
-          <el-radio :label="false">单规格</el-radio>
+          <el-radio :label="false" disabled>单规格（仅展示多规格）</el-radio>
           <el-radio :label="true">多规格</el-radio>
         </el-radio-group>
       </el-card>
@@ -75,7 +75,10 @@
               </el-card>
             </el-card>
           </div>
-          <div class="" v-if="productSpec.length">
+          <el-card>
+            <div slot="header" class="clearfix">
+              <span>商品列表</span>
+            </div>
             <el-table :data="productSpec" :span-method="objectSpanMethod">
               <el-table-column type="index"></el-table-column>
               <el-table-column v-for="(item, index) in specList" :key="index" :label="item.name">
@@ -119,25 +122,25 @@
                 </template>
               </el-table-column>
             </el-table>
-          </div>
+          </el-card>
         </div>
       </div>
       <el-card>
         <el-button @click="getSpecList">获得规格列表</el-button>
         <el-button @click="getProductSpec">获得商品列表</el-button>
       </el-card>
-    </el-card>
-    <el-card>
-      <div slot="header" class="clearfix">
-        <span>规格列表</span>
-      </div>
-      {{ showData.spec }}
-    </el-card>
-    <el-card>
-      <div slot="header" class="clearfix">
-        <span>商品列表</span>
-      </div>
-      {{ showData.product }}
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>规格列表</span>
+        </div>
+        {{ showData.spec }}
+      </el-card>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>商品列表</span>
+        </div>
+        {{ showData.product }}
+      </el-card>
     </el-card>
   </div>
 </template>
@@ -164,6 +167,7 @@
 //        return require(['@/components/Upload/components/uploadOnly.vue'], resolve)
 //      }
     },
+    layout: 'blank',
     props: {
     },
     data() {
