@@ -1,5 +1,5 @@
 export const mutations = {
-  SET_LANG (state, { todo }) {
+  SET_LANG (state, todo) {
     state.modules.app.locale = todo
   }
 }

@@ -66,11 +66,9 @@
       }
     },
     created() {
-      console.log(this.$store.state)
     },
     methods: {
       goUrl(url) {
-        console.log(url)
         this.$router.push(url)
       }
     }

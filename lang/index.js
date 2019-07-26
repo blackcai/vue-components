@@ -21,7 +21,6 @@ export default ({ app, store }) => {
       zh: zhLang
     }
   })
-  
   app.i18n.path = (link) => {
     if (app.i18n.locale === app.i18n.fallbackLocale) {
       return `/${link}`
