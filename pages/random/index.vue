@@ -45,6 +45,7 @@
   export default {
     components: {},
     name: 'random',
+    layout: 'bar',
     head() {
       return {
         title: '随机字符生成器'

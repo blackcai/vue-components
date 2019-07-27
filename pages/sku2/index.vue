@@ -201,7 +201,7 @@
 
   export default {
     name: 'app',
-
+    layout: 'bar',
     data () {
       return {
         // 规格

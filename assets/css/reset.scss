@@ -432,7 +432,7 @@ ul, li {
   padding:0;margin:0;
 }
 
-a {text-decoration: none;color:#ccc;}
+a {text-decoration: none;}
 
 // clearfix
 .clearfix {
@@ -465,25 +465,14 @@ html {
   margin: 0;
 }
 
-a:focus, a:hover{color:#fed02f;}
-
 h1{padding:0;margin:0;}
 // 清除outline
 input {outline: none;}
-
-//common
-.common-bg{width:100%;background:#fff;overflow: hidden;}
-
-
 .hide{display: none;}
 
-// default set
-.container-1300{min-width:1300px;}
-.container-1200{min-width:1200px;}
-
 .text-center{text-align: center}
-
-.article-content-box-img-width{
-  img{max-width:100% !important;}
+.text-left{text-align: left}
+.text-right{text-align: right}
+a[title='站长统计'] {
+  display:none;
 }
-

@@ -1,48 +1,16 @@
 <template>
   <section>
-    <el-row>
-      <el-col :span="12" class="text-left">组件demo</el-col>
-      <el-col :span="12" class="text-right">
-        <a href="https://gitee.com/mymcode/vue-component">gitee</a>|
-        <a href="https://github.com/blackcai/vue-components">github</a>
-      </el-col>
-    </el-row>
     <div class="">
-      <el-card shadow="always">
-          <div>一个简易实用的商品sku添加组件</div>
-        <div>
-          <a href="https://gitee.com/mymcode/vue-component/tree/develop/pages/sku" target="_blank">https://gitee.com/mymcode/vue-component/tree/develop/pages/sku</a>
-        </div>
-          <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="text" class="button" @click="goUrl('sku')">查看</el-button>
-          </div>
-      </el-card>
-
-      <el-card shadow="always">
-        <div>
-          <div>另一个简易实用的商品sku添加组件<el-tag size="mini">转载</el-tag></div>
-          <div>
-            <a href="https://github.com/rossroma/vue-sku" target="_blank">https://github.com/rossroma/vue-sku</a>
-          </div>
-          <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="text" class="button" @click="goUrl('sku2')">查看</el-button>
-          </div>
-        </div>
-      </el-card>
-
-      <el-card shadow="always">
-        <div>
-          <div>随机密码生成</div>
-          <div>
-            <a href="https://gitee.com/mymcode/vue-component/tree/develop/pages/random" target="_blank">https://gitee.com/mymcode/vue-component/tree/develop/pages/random</a>
-          </div>
-          <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="text" class="button" @click="goUrl('random')">查看</el-button>
-          </div>
-        </div>
+      <el-card shadow="always" v-for="(item, index) in cmpItem" :key="index">
+        <el-row>
+          <el-col :span="12">
+            <div>{{ item.name }}<el-tag size="mini" v-if="item.not">转载</el-tag> <span class="time">{{ item.time }}</span></div>
+          </el-col>
+          <el-col :span="12" class="text-right">
+            <a :href="item.code" target="_blank">查看源码</a>
+            <el-button type="text" class="button" @click="goUrl(item.url)">查看</el-button>
+          </el-col>
+        </el-row>
       </el-card>
     </div>
   </section>
@@ -54,7 +22,11 @@
     layout: 'bar',
     data() {
       return {
-        currentDate: '2019-7-23'
+        cmpItem: [
+          { name: '一个简易实用的商品sku添加组件', url: 'sku', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/sku', time: '2019-7-27', not: false },
+          { name: '另一个简易实用的商品sku添加组件', url: 'sku2', code: 'https://github.com/rossroma/vue-sku', time: '2019-7-27', not: true },
+          { name: '随机密码生成', url: 'random', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/random', time: '2019-7-27', not: false },
+        ]
       }
     },
     created() {

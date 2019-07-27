@@ -167,7 +167,7 @@
 //        return require(['@/components/Upload/components/uploadOnly.vue'], resolve)
 //      }
     },
-    layout: 'blank',
+    layout: 'bar',
     props: {
     },
     data() {
