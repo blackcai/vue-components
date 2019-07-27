@@ -1,8 +1,11 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="12" class="text-left"></el-col>
-      <el-col :span="12" class="text-right"></el-col>
+      <el-col :span="12" class="text-left">组件demo</el-col>
+      <el-col :span="12" class="text-right">
+        <a href="https://gitee.com/mymcode/vue-component">gitee</a>|
+        <a href="https://github.com/blackcai/vue-components">github</a>
+      </el-col>
     </el-row>
     <div class="">
       <el-card shadow="always">
