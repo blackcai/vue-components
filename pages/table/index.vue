@@ -59,7 +59,7 @@
       </thead>
       <tbody>
       <tr v-for="(item, index) in tbody" :key="index" :style="{ borderTop: `1px solid ${ color.border }` }">
-        <td v-for="(c, j) in item" :key="j" style="padding:10px;" :style="{ borderRight: `1px solid ${ color.border }`, color: color.headColor }">
+        <td v-for="(c, j) in item" :key="j" style="padding:10px;" :style="{ borderRight: `1px solid ${ color.border }`, color: color.bodyColor }">
           <input type="text" v-if="!inputText" v-model="tbody[index][j]" placeholder="" :style="{ border: hideBorder ? 'none' : '' }">
           <span v-if="inputText">{{ tbody[index][j] }}</span>
         </td>
