@@ -60,15 +60,43 @@
       <tbody>
       <tr v-for="(item, index) in tbody" :key="index" :style="{ borderTop: `1px solid ${ color.border }` }">
         <td v-for="(c, j) in item" :key="j" style="padding:10px;" :style="{ borderRight: `1px solid ${ color.border }`, color: color.bodyColor }">
-          <input type="text" v-if="!inputText" v-model="tbody[index][j]" placeholder="" :style="{ border: hideBorder ? 'none' : '' }">
+          <input type="text" v-if="!inputText" v-model="tbody[index][j]" style="width:100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;" placeholder="" :style="{ border: hideBorder ? 'none' : '' }">
           <span v-if="inputText">{{ tbody[index][j] }}</span>
         </td>
       </tr>
       </tbody>
     </table>
+
+    <div class="table" style="width:1000px;margin: 100px auto 100px auto;" v-if="thead.length" :style="{ border: `1px solid ${ color.border }` }" ref="tableForDiv">
+      <div class="header" style="display: flex;" :style="{ background: color.headBg }">
+        <div v-for="(item, index) in thead" :key="index" style="text-align: left;padding:10px;" :style="{ width: `${pjWidth}%`, borderRight: thead.length - 1 === index ? '' : `1px solid ${color.border}`, color: color.headColor }">{{ item }}</div>
+      </div>
+      <div class="body" style="display: flex;" v-for="(item, index) in tbody" :key="index" :style="{ borderTop: `1px solid ${ color.border }` }">
+        <div v-for="(c, j) in item" :key="j" style="padding:10px;" :style="{ width: `${pjWidth}%`, borderRight: item.length - 1 === j ? '' : `1px solid ${ color.border }`, color: color.bodyColor }">
+          <input type="text" v-if="!inputText" v-model="tbody[index][j]" placeholder="" style="width:100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;" :style="{ border: hideBorder ? 'none' : '' }">
+          {{ inputText ? tbody[index][j] : '' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="table" style="width:1000px;margin: 100px auto 100px auto;" v-if="thead.length" :style="{ border: `1px solid ${ color.border }` }" ref="tableForLi">
+      <ul class="header" :style="{ background: color.headBg }" style="width:100%;height:40px;">
+        <li v-for="(item, index) in thead" :key="index" style="float:left;padding:10px;height:100%;" :style="{ width: `${pjWidth}%`, borderRight: thead.length - 1 === index ? '' : `1px solid ${color.border}`, color: color.headColor }">{{ item }}</li>
+      </ul>
+      <ul class="body" v-for="(item, index) in tbody" :key="index" :style="{ borderTop: `1px solid ${ color.border }` }" style="width:100%;height:50px;">
+        <li v-for="(c, j) in item" :key="j" style="float:left;padding:10px;height:100%;" :style="{ width: `${pjWidth}%`, borderRight: item.length - 1 === j ? '' : `1px solid ${ color.border }`, color: color.bodyColor }">
+          <input type="text" v-if="!inputText" v-model="tbody[index][j]" placeholder="" style="width:100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;" :style="{ border: hideBorder ? 'none' : '' }">
+          {{ inputText ? tbody[index][j] : '' }}
+        </li>
+      </ul>
+    </div>
+
     <el-card>
       <div slot="header" class="clearfix">
-        <span>表格代码</span><el-button @click="getHtml" size="mini">获取表格代码</el-button>
+        <span>表格代码</span>
+        <el-button @click="getHtml" size="mini">获取表格代码</el-button>
+        <el-button @click="getHtmlForDiv" size="mini">获取Div代码</el-button>
+        <el-button @click="getHtmlForUl" size="mini">获取ul-li代码</el-button>
       </div>
       <el-card>{{ html }}</el-card>
     </el-card>
@@ -92,7 +120,8 @@
           headColor: '#545454',
           bodyColor: '#545454'
         },
-        html: ''
+        html: '',
+        pjWidth: '' // 平均宽度
       }
     },
     layout: 'bar',
@@ -106,10 +135,16 @@
         } else {
           this.addTbody()
         }
+        this.updateWidth()
       },
       closeThead(index) {
         this.thead.splice(index, 1)
         this.deleteBody(index)
+        this.updateWidth()
+      },
+      // 更新宽度
+      updateWidth() {
+        this.pjWidth = (1000 / (this.thead.length * 1000)).toFixed(2) * 100
       },
       updateBody(index) {
         this.tbody.forEach((value, j) => {
@@ -153,7 +188,33 @@
           isChange = true
         }
         setTimeout(() => {
-          this.html = this.$refs.table.outerHTML
+          this.html = this.$refs.table.outerHTML.replaceAll('<!---->', '')
+          if (isChange) {
+            this.inputText = false
+          }
+        }, 0)
+      },
+      getHtmlForDiv() {
+        let isChange = false
+        if (!this.inputText) {
+          this.inputText = true
+          isChange = true
+        }
+        setTimeout(() => {
+          this.html = this.$refs.tableForDiv.outerHTML.replaceAll('<!---->', '')
+          if (isChange) {
+            this.inputText = false
+          }
+        }, 0)
+      },
+      getHtmlForUl() {
+        let isChange = false
+        if (!this.inputText) {
+          this.inputText = true
+          isChange = true
+        }
+        setTimeout(() => {
+          this.html = this.$refs.tableForLi.outerHTML.replaceAll('<!---->', '')
           if (isChange) {
             this.inputText = false
           }

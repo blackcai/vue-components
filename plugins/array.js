@@ -20,6 +20,11 @@ Array.prototype.add = function(val) {
   }
 }
 
+String.prototype.replaceAll  = function(s1,s2){
+  return this.replace(new RegExp(s1,"gm"),s2);
+}
+
+
 // 对象扩展
 /**
  *对Date的扩展，将 Date 转化为指定格式的String
