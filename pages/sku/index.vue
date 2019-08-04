@@ -326,6 +326,27 @@
           })
         }
       },
+      // 生成id列表
+      createIdList(lst, index, list) {
+        const idList = []
+        if (index === list.length - 1) {
+          // 最后一个，也有可能是唯一一个
+          // 依次排列数据返回
+          lst.forEach((value) => {
+            idList.push(value.id)
+          })
+        } else {
+          // 不是最后一个
+          // 取下一级数据
+          lst.forEach((value, j) => {
+            const childList = this.createIdList(list[index + 1].list, index + 1, list)
+            childList.forEach((ids) => {
+              idList.push(`${value.id}_${ids}`)
+            })
+          })
+        }
+        return idList
+      },
       // 生成指定索引开始的id列表，包含自身
       getIndexIdList(key, id) {
         // 索引总数
@@ -335,28 +356,8 @@
           return [id]
         }
         let arr = []
-        const getList = (lst, i) => {
-          const idList = []
-          if (i === list.length - 1) {
-            // 最后一个，也有可能是唯一一个
-            // 依次排列数据返回
-            lst.forEach((value, index) => {
-              idList.push(value.id)
-            })
-          } else {
-            // 不是最后一个
-            // 取下一级数据
-            lst.forEach((value, j) => {
-              const childList = getList(list[i + 1].list, i + 1)
-              childList.forEach((ids, k) => {
-                idList.push(`${value.id}_${ids}`)
-              })
-            })
-          }
-          return idList
-        }
         // 循环后面的列表
-        arr = getList(list[0].list, 0)
+        arr = this.createIdList(list[0].list, 0, list)
         // 添加前置id
         arr.forEach((value, index) => {
           arr[index] = `${id}_${value}`
@@ -370,27 +371,8 @@
         }
         const list = this.specList.slice(0, key)
         let arr = []
-        const getList = (lst, i) => {
-          const idList = []
-          if (i === list.length - 1) {
-            // 如果是最后一个，也有可能是唯一一个
-            lst.forEach((value, index) => {
-              idList.push(value.id)
-            })
-          } else {
-            // 不是最后一个
-            // 取下一级数据
-            lst.forEach((value, j) => {
-              const childList = getList(list[i + 1].list, i + 1)
-              childList.forEach((ids, k) => {
-                idList.push(`${value.id}_${ids}`)
-              })
-            })
-          }
-          return idList
-        }
         // 循环后面的列表
-        arr = getList(list[0].list, 0)
+        arr = this.createIdList(list[0].list, 0, list)
         return arr
       },
       // 更新数据 主规格增加
