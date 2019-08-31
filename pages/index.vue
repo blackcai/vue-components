@@ -24,7 +24,8 @@
       return {
         cmpItem: [
           { name: '一个简易实用的商品sku添加组件', url: 'sku', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/sku', time: '2019-7-27', not: false },
-          { name: '另一个简易实用的商品sku添加组件', url: 'sku2', code: 'https://github.com/rossroma/vue-sku', time: '2019-7-27', not: true },
+          { name: '另一个简易实用的商品sku添加组件', url: 'sku2', code: 'https://github.com/rossroma/vue-sku', time: '2019-7-27', not: false },
+          { name: '上个sku组件的ui改版', url: 'sku2/index2', code: 'https://github.com/rossroma/vue-sku/tree/refactoring', time: '2019-8-31', not: false },
           { name: '随机密码生成', url: 'random', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/random', time: '2019-7-27', not: false },
           { name: '表格生成器', url: 'table', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/table', time: '2019-7-30', not: false },
         ]
