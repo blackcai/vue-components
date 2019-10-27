@@ -15,11 +15,10 @@ module.exports = {
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/logo.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/uda-logo.png' }
     ]
   },
   router: {
-    middleware: 'i18n'
   },
   /*
   ** Customize the progress-bar color
@@ -39,13 +38,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui',
-    '@/plugins/svg',
-    '@/plugins/pagination',
-    '@/plugins/array',
-    '@/plugins/filter',
-    '@/plugins/prototype',
-    '@/lang'
+    '@/plugins/element-ui'
   ],
 
   /*
