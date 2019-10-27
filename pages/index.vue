@@ -29,7 +29,7 @@
           { name: '上个sku组件的ui改版', url: 'sku2/index2', code: 'https://github.com/rossroma/vue-sku/tree/refactoring', time: '2019-8-31', not: false },
           { name: '随机密码生成', url: 'random', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/random', time: '2019-7-27', not: false },
           { name: '表格生成器', url: 'table', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/table', time: '2019-7-30', not: false },
-          { name: 'FCC翻译团队邀请（非组件）', url: 'https://github.com/freeCodeCamp/news-translation', code: 'https://github.com/freeCodeCamp/news-translation', time: '', not: false }
+          { name: 'FCC翻译团队邀请（非组件）', url: 'https://github.com/freeCodeCamp/news-translation', code: '', time: '', not: false }
         ]
       }
     },
