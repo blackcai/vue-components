@@ -65,18 +65,18 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-      const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
-      svgRule.exclude = [resolve(__dirname, 'assets/svg')]
-
-      // Includes /assets/svg for svg-sprite-loader
-      config.module.rules.push({
-        test: /\.svg$/,
-        include: [resolve(__dirname, 'assets/svg')],
-        loader: 'svg-sprite-loader',
-        options: {
-          symbolId: 'icon-[name]'
-        }
-      })
+      // const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
+      // svgRule.exclude = [resolve(__dirname, 'assets/svg')]
+      //
+      // // Includes /assets/svg for svg-sprite-loader
+      // config.module.rules.push({
+      //   test: /\.svg$/,
+      //   include: [resolve(__dirname, 'assets/svg')],
+      //   loader: 'svg-sprite-loader',
+      //   options: {
+      //     symbolId: 'icon-[name]'
+      //   }
+      // })
     }
   }
 }
