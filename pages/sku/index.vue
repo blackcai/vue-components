@@ -1,147 +1,125 @@
 <template>
   <div id="priceByAttr">
-    <el-card>
-      <el-card>
-        <el-radio-group v-model="moreSpec">
-          <el-radio :label="false" disabled>单规格（仅展示多规格）</el-radio>
-          <el-radio :label="true">多规格</el-radio>
-        </el-radio-group>
-      </el-card>
-      <!-- 单规格 -->
-      <div class="only-spec" v-if="!moreSpec">
-        <div class="">
-          <el-form :model="formItem" class="el-form" size="mini" label-width="100px">
-            <el-form-item label="商家编码">
-              <el-input placeholder="商家编码" v-model="formItem.sku"></el-input>
-            </el-form-item>
-            <el-form-item label="成本价">
-              <el-input placeholder="成本价" v-model="formItem.cost"></el-input>
-            </el-form-item>
-            <el-form-item label="库存">
-              <el-input placeholder="库存" v-model="formItem.num"></el-input>
-            </el-form-item>
-            <el-form-item label="销售价">
-              <el-input placeholder="销售价" v-model="formItem.price"></el-input>
-            </el-form-item>
-            <el-form-item label="重量">
-              <el-input placeholder="重量" v-model="formItem.weight"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
+    <el-radio-group v-model="moreSpec">
+      <el-radio :label="false">单规格</el-radio>
+      <el-radio :label="true">多规格</el-radio>
+    </el-radio-group>
+    <!-- 单规格 -->
+    <div class="only-spec" v-if="!moreSpec">
+      <div class="">
+        <el-form :model="formItem" class="el-form" size="mini" label-width="100px">
+          <el-form-item label="规格编码">
+            <el-input placeholder="规格编码" v-model="formItem.sku"></el-input>
+          </el-form-item>
+          <el-form-item label="成本价">
+            <el-input placeholder="成本价" v-model="formItem.cost"></el-input>
+          </el-form-item>
+          <el-form-item label="库存">
+            <el-input placeholder="库存" v-model="formItem.num"></el-input>
+          </el-form-item>
+          <el-form-item label="销售价">
+            <el-input placeholder="销售价" v-model="formItem.price"></el-input>
+          </el-form-item>
+          <el-form-item label="重量">
+            <el-input placeholder="重量" v-model="formItem.weight"></el-input>
+          </el-form-item>
+        </el-form>
       </div>
-      <div class="more-spec" v-if="moreSpec">
+    </div>
+    <div class="more-spec" v-if="moreSpec">
+      <div class="">
         <div class="">
-          <div class="">
-            <el-card>
-              <div slot="header" class="clearfix">
-                <span>规格信息</span><el-button size="mini" @click="initData" type="primary">生成规格</el-button>
-              </div>
-              <el-card class="box-card" v-for="(item, index) in this.specList" :key="index">
-                <div slot="header" class="clearfix">
-                  <span>{{ item.name }}</span>
-                </div>
-                <div class="text item">
-                  <el-tag v-for="(child, j) in item.list" :key="j" closable @close="delSpecValue(index, j)" size="small">{{ child.value }}</el-tag>
-                  <el-input v-model="childItem[index]" size="mini" placeholder="请输入规格值" style="width:200px;" @keyup.enter.native="addChildSpec(index)">
-                    <el-button slot="append" icon="el-icon-plus" @click="addChildSpec(index)">添加</el-button>
-                  </el-input>
-                </div>
-              </el-card>
-              <el-card class="">
-                <el-form class="" class="el-form" v-if="addItem.add" label-width="100px" size="mini">
-                  <el-form-item label="规格名称">
-                    <el-input placeholder="规格名称" v-model="addItem.name"></el-input>
-                  </el-form-item>
-                  <el-form-item label="规格值">
-                    <el-input placeholder="规格值" v-model="addItem.value"></el-input>
-                  </el-form-item>
-                  <el-form-item class="">
-                    <el-button @click="addSpec" type="primary">确认</el-button>
-                    <el-button @click="addItem.add = false" type="info">取消</el-button>
-                  </el-form-item>
-                </el-form>
-                <div class="">
-                  <el-button @click="addItem.add = true">添加规格值</el-button></div>
-              </el-card>
-              <el-card>
-                <el-row class="" type="flex" :gutter="10">
-                  <el-col style="text-align:right">批量设置：</el-col>
-                  <el-col><el-input placeholder="请输入成本价" size="mini" v-model="defaultData.cost"></el-input></el-col>
-                  <el-col><el-input placeholder="请输入销售价" size="mini" v-model="defaultData.price"></el-input></el-col>
-                  <el-col><el-input placeholder="请输入库存" size="mini" v-model="defaultData.num"></el-input></el-col>
-                  <el-col><el-input placeholder="请输入重量" size="mini" v-model="defaultData.weight"></el-input></el-col>
-                  <el-col><el-button @click="uniteSet" size="mini" type="primary">确定</el-button></el-col>
-                </el-row>
-              </el-card>
-            </el-card>
-          </div>
           <el-card>
             <div slot="header" class="clearfix">
-              <span>商品列表</span>
+              <span>规格信息</span>
             </div>
-            <el-table :data="productSpec" :span-method="objectSpanMethod">
-              <el-table-column type="index"></el-table-column>
-              <el-table-column v-for="(item, index) in specList" :key="index" :label="item.name">
-                <template slot-scope="scope">
-                  {{ getSpecAttr(index, scope.$index)['value'] }}-{{ getSpecAttr(index, scope.$index)['id'] }}
-                </template>
-              </el-table-column>
-              <el-table-column label="图片">
-                <template slot-scope="scope">
-                  <!--<upload-wrap :faceUrl="factImgUrl[scope.$index]" v-model="productSpec[scope.$index].url"  width="50px" height="50px"></upload-wrap>-->
-                </template>
-              </el-table-column>
-              <el-table-column label="规格编码" prop="sku">
-                <template slot-scope="scope">
-                  <el-input size="mini" placeholder="请输入规格编码" v-model="productSpec[scope.$index].sku"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="成本价（元）" prop="cost">
-                <template slot-scope="scope">
-                  <el-input size="mini" placeholder="请输入成本价（元）" v-model="productSpec[scope.$index].cost"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="库存" prop="num">
-                <template slot-scope="scope">
-                  <el-input size="mini" placeholder="请输入库存" v-model="productSpec[scope.$index].num"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="销售价（元）" prop="price">
-                <template slot-scope="scope">
-                  <el-input size="mini" placeholder="请输入销售价（元）" v-model="productSpec[scope.$index].price"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="重量" prop="weight">
-                <template slot-scope="scope">
-                  <el-input size="mini" placeholder="请输入重量" v-model="productSpec[scope.$index].weight"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="是否启用">
-                <template slot-scope="scope">
-                  <el-switch v-model="productSpec[scope.$index].use" :active-value="1" :inactive-value="0"></el-switch>
-                </template>
-              </el-table-column>
-            </el-table>
+            <el-card class="box-card" v-for="(item, index) in this.specList" :key="index">
+              <div slot="header" class="clearfix">
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="text item">
+                <el-tag v-for="(child, j) in item.list" :key="j" closable @close="delSpecValue(index, j)" size="small">{{ child.name }}</el-tag>
+                <el-input v-model="childItem[index]" size="mini" placeholder="请输入规格值" style="width:200px;" @keyup.enter.native="addChildSpec(index)">
+                  <el-button slot="append" icon="el-icon-plus" @click="addChildSpec(index, item)">添加</el-button>
+                </el-input>
+              </div>
+            </el-card>
+            <el-card class="">
+              <el-form class="" class="el-form" v-if="addItem.add" label-width="100px" size="mini">
+                <el-form-item label="规格名称">
+                  <el-input placeholder="规格名称" v-model="addItem.name"></el-input>
+                </el-form-item>
+                <!--<el-form-item label="规格值">-->
+                <!--<el-input placeholder="规格值" v-model="addItem.value"></el-input>-->
+                <!--</el-form-item>-->
+                <el-form-item class="">
+                  <el-button @click="addSpec({ name: addItem.name })" type="primary">确认</el-button>
+                  <el-button @click="addItem.add = false" type="info">取消</el-button>
+                </el-form-item>
+              </el-form>
+              <div class="">
+                <el-button size="mini" @click="addItem.add = true">添加规格值</el-button></div>
+            </el-card>
+            <el-card>
+              <el-row class="" type="flex" :gutter="10">
+                <el-col style="text-align:right">批量设置：</el-col>
+                <el-col><el-input placeholder="请输入成本价" size="mini" v-model="defaultData.cost"></el-input></el-col>
+                <el-col><el-input placeholder="请输入销售价" size="mini" v-model="defaultData.price"></el-input></el-col>
+                <el-col><el-input placeholder="请输入库存" size="mini" v-model="defaultData.num"></el-input></el-col>
+                <el-col><el-input placeholder="请输入重量" size="mini" v-model="defaultData.weight"></el-input></el-col>
+                <el-col><el-button @click="uniteSet" size="mini" type="primary">确定</el-button></el-col>
+              </el-row>
+            </el-card>
           </el-card>
         </div>
+        <div class="" v-if="productSpec.length">
+          <el-table :data="productSpec" :span-method="objectSpanMethod">
+            <el-table-column type="index"></el-table-column>
+            <el-table-column v-for="(item, index) in specList" :key="index" :label="item.name">
+              <template slot-scope="scope">
+                {{ getSpecAttr(index, scope.$index)['name'] }}{{ getSpecAttr(index, scope.$index)['id'] }}
+              </template>
+            </el-table-column>
+            <el-table-column label="图片">
+              <template slot-scope="scope">
+                <upload-only v-model="productSpec[scope.$index].image_id" :size="25" :image="{ src: productSpec[scope.$index].image_url }"></upload-only>
+              </template>
+            </el-table-column>
+            <el-table-column label="规格编码" prop="sku">
+              <template slot-scope="scope">
+                <el-input size="mini" placeholder="请输入规格编码" v-model="productSpec[scope.$index].sku"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="成本价（元）" prop="cost">
+              <template slot-scope="scope">
+                <el-input size="mini" placeholder="请输入成本价（元）" v-model="productSpec[scope.$index].cost"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="库存" prop="num">
+              <template slot-scope="scope">
+                <el-input size="mini" placeholder="请输入库存" v-model="productSpec[scope.$index].num"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="销售价（元）" prop="price">
+              <template slot-scope="scope">
+                <el-input size="mini" placeholder="请输入销售价（元）" v-model="productSpec[scope.$index].price"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="重量" prop="weight">
+              <template slot-scope="scope">
+                <el-input size="mini" placeholder="请输入重量" v-model="productSpec[scope.$index].weight"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否启用">
+              <template slot-scope="scope">
+                <el-switch v-model="productSpec[scope.$index].use" :active-value="1" :inactive-value="0"></el-switch>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+
       </div>
-      <el-card>
-        <el-button @click="getSpecList">获得规格列表</el-button>
-        <el-button @click="getProductSpec">获得商品列表</el-button>
-      </el-card>
-      <el-card>
-        <div slot="header" class="clearfix">
-          <span>规格列表</span>
-        </div>
-        {{ showData.spec }}
-      </el-card>
-      <el-card>
-        <div slot="header" class="clearfix">
-          <span>商品列表</span>
-        </div>
-        {{ showData.product }}
-      </el-card>
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -163,21 +141,29 @@
   export default {
     name: 'pricebyattr',
     components: {
-//      UploadWrap: resolve => {
-//        return require(['@/components/Upload/components/uploadOnly.vue'], resolve)
-//      }
+      UploadOnly: resolve => {
+        return require(['@/components/image/only.vue'], resolve)
+      }
+    },
+    props: {
+      value: [Array, Object]
     },
     layout: 'bar',
-    props: {
-    },
     data() {
       return {
         formItem: { // 单规格属性
+          image_id: null, // 图片地址
+          sku: '', // 编码
+          cost: '', // 进货价
+          price: '', // 销售价
+          num: '', // 数量
+          weight: '', // 重量
+          use: 1, // 是否启用
+          attr: '0' // 属性
         },
         addItem: { // 添加栏规格
           add: false, // 是否添加状态
-          name: '', // 规格名
-          value: '' // 规格值
+          name: '' // 规格名
         },
         childItem: [], // 添加已有的规格子类输入框
         defaultData: { // 统一设置信息
@@ -189,114 +175,90 @@
         specList: [], // 规格总览 内容参见说明一
         productSpec: [ // 规格列表 内容参见说明二
         ],
-        moreSpec: true, // 多规格
+        moreSpec: false, // 多规格
         factImgUrl: [],
-        sqlData: [], // 模拟后台保存数据
-        showData: {
-          spec: [],
-          product: []
-        }
+        defaultChange: false, // 防止多次触发watch
+        sqlData: []
+      }
+    },
+    watch: {
+      value: {
+        handler(n) {
+          if (this.defaultChange) {
+            this.defaultChange = false
+          } else {
+            this.refresh()
+          }
+        },
+        deep: true
+      },
+      moreSpec(n) {
+        this.updateValue()
+      },
+      formItem: {
+        handler(n) {
+          if (this.defaultChange) {
+            this.defaultChange = false
+          } else {
+            this.updateValue()
+          }
+        },
+        deep: true
       }
     },
     created() {
     },
     methods: {
-      // 模拟后台保存数据
-      /*
-      * id
-      * name
-      * child
-      *   id
-      *   name
-      * */
-      /* 后台设计规则是用户添加规格则上传至服务器并保存返回父级和子级的id */
-      saveSpec({ name = '', child = '' } = {}) {
+      saveSpec({ name = '', id = '' } = {}) {
+        console.log(name, id)
         return new Promise((resolve, reject) => {
-          if (name === '' || child === '') return
-          let id = ''
-          let childId = ''
-          // 如果有数据则往已有的数据中添加
-          this.sqlData.forEach((value, index) => {
-            if (value.name === name) {
-              id = value.id
-              childId = `${value.id}${value.list.length}`
-              value.list.push({
-                id: childId,
-                name: child
-              })
-              resolve({
-                data: {
-                  id: id,
-                  childId: childId
-                }
-              })
-            }
-          })
-          // 如果为空则表示没有
-          if (!id) {
-            id = this.sqlData.length
-            this.sqlData.push({
-              id: id,
-              name: name,
-              list: [
-                {
-                  id: `${id}0`,
-                  name: child
-                }
-              ]
-            })
-            resolve({
-              data: {
-                id: id,
-                childId: `${id}0`
+          // 没有数据
+          if (name === '' || id === '') {
+            throw Error('添加错误')
+            return
+          }
+          // 如果有id则代表添加，没有则表示删除
+          if (id) {
+            this.sqlData.forEach((value, index) => {
+              if (value.id === id) {
+                // 取得父数据
+                this.sqlData[index].list.push({
+                  id: value.list.length || 1,
+                  value: name
+                })
+                resolve({
+                  code: 200,
+                  data: {
+                    id: value.list.length || 1,
+                    value: name
+                  },
+                  message: '添加成功'
+                })
               }
             })
+          } else {
+            this.sqlData.push({
+              id: this.sqlData.length || 1,
+              value: name,
+              list: []
+            })
+            resolve({
+              code: 200,
+              data: {
+                id: this.sqlData.length || 1,
+                value: name
+              },
+              message: '添加成功'
+            })
           }
+          reject()
         })
-      },
-      // 添加调试数据
-      initData() {
-        // 添加第一条数据
-        setTimeout(() => {
-          this.addItem = { // 添加栏规格
-            add: false, // 是否添加状态
-            name: '颜色', // 规格名
-            value: '黄色' // 规格值
-          }
-          this.addSpec()
-        }, 1000)
-        setTimeout(() => {
-          this.childItem[0] = '黑色'
-          this.addChildSpec(0)
-        }, 2000)
-        setTimeout(() => {
-          this.addItem = {
-            name: '尺寸',
-            value: 's'
-          }
-          this.addSpec()
-        }, 3000)
-        setTimeout(() => {
-          this.childItem[1] = 'l'
-          this.addChildSpec(1)
-        }, 4000)
-        setTimeout(() => {
-          this.addItem = {
-            name: '成色',
-            value: '八成新'
-          }
-          this.addSpec()
-        }, 5000)
-        setTimeout(() => {
-          this.childItem[2] = '九成新'
-          this.addChildSpec(2)
-        }, 6000)
       },
       // 创建新的数据
       addData(id) {
         // const vm = this
         const product = {
-          url: '', // 图片地址
+          image_id: null, // 图片地址
           sku: '', // 编码
           cost: '', // 进货价
           price: '', // 销售价
@@ -325,27 +287,7 @@
             attr: id
           })
         }
-      },
-      // 生成id列表
-      createIdList(lst, index, list) {
-        const idList = []
-        if (index === list.length - 1) {
-          // 最后一个，也有可能是唯一一个
-          // 依次排列数据返回
-          lst.forEach((value) => {
-            idList.push(value.id)
-          })
-        } else {
-          // 不是最后一个
-          // 取下一级数据
-          lst.forEach((value, j) => {
-            const childList = this.createIdList(list[index + 1].list, index + 1, list)
-            childList.forEach((ids) => {
-              idList.push(`${value.id}_${ids}`)
-            })
-          })
-        }
-        return idList
+        this.updateValue()
       },
       // 生成指定索引开始的id列表，包含自身
       getIndexIdList(key, id) {
@@ -356,8 +298,28 @@
           return [id]
         }
         let arr = []
+        const getList = (lst, i) => {
+          const idList = []
+          if (i === list.length - 1) {
+            // 最后一个，也有可能是唯一一个
+            // 依次排列数据返回
+            lst.forEach((value, index) => {
+              idList.push(value.id)
+            })
+          } else {
+            // 不是最后一个
+            // 取下一级数据
+            lst.forEach((value, j) => {
+              const childList = getList(list[i + 1].list, i + 1)
+              childList.forEach((ids, k) => {
+                idList.push(`${value.id}_${ids}`)
+              })
+            })
+          }
+          return idList
+        }
         // 循环后面的列表
-        arr = this.createIdList(list[0].list, 0, list)
+        arr = getList(list[0].list, 0)
         // 添加前置id
         arr.forEach((value, index) => {
           arr[index] = `${id}_${value}`
@@ -371,14 +333,33 @@
         }
         const list = this.specList.slice(0, key)
         let arr = []
+        const getList = (lst, i) => {
+          const idList = []
+          if (i === list.length - 1) {
+            // 如果是最后一个，也有可能是唯一一个
+            lst.forEach((value, index) => {
+              idList.push(value.id)
+            })
+          } else {
+            // 不是最后一个
+            // 取下一级数据
+            lst.forEach((value, j) => {
+              const childList = getList(list[i + 1].list, i + 1)
+              childList.forEach((ids, k) => {
+                idList.push(`${value.id}_${ids}`)
+              })
+            })
+          }
+          return idList
+        }
         // 循环后面的列表
-        arr = this.createIdList(list[0].list, 0, list)
+        arr = getList(list[0].list, 0)
         return arr
       },
       // 更新数据 主规格增加
       updateData(index, id) {
         const product = {
-          url: '', // 图片地址
+          image_id: null, // 图片地址
           sku: '', // 编码
           cost: '', // 进货价
           price: '', // 销售价
@@ -433,6 +414,7 @@
             })
           }
         }
+        this.updateValue()
       },
       // 统一设置数据
       uniteSet() {
@@ -443,48 +425,56 @@
           this.$set(this.productSpec[index], 'num', this.defaultData.num)
         })
       },
-      // 添加新的规格名称
-      addSpec() {
-        this.saveSpec({
-          name: this.addItem.name,
-          child: this.addItem.value
-        }).then((res) => {
-          // 判断是否已经有了信息
-          const info = this.specList.filter(o => o.id === res.data.id)
-          if (info.length) {
-            const child = info[0].list.filter(o => o.id === res.data.childId)
-            if (child.length) {
-              this.$message('该规格已存在')
-              return
-            } else {
-              let index = 0
-              this.specList.forEach((value, j) => {
-                if (value.id === info[0].id) {
-                  index = j
-                }
-              })
+      /*
+      * 添加新的规格名称
+      * @params
+      *   name 添加的名称
+      *   id 父级id
+      * */
+      addSpec({ name = '', id = 0, callback } = {}) {
+        const info = this.specList.filter(o => o.id === id)
+        if (info.length) {
+          const child = info[0].list.filter(o => o.name === name)
+          if (child.length) {
+            this.$message('该规格已存在')
+            return
+          }
+        }
+        this.saveSpec({ name, id }).then((res) => {
+          // 如果添加的时候有 id 则表示添加的子级项
+          if (id) {
+            let index = 0
+            this.specList.forEach((value, j) => {
+              if (value.id === info[0].id) {
+                index = j
+              }
+            })
+            if (info[0].list.length) {
               info[0].list.push({
-                id: res.data.childId,
-                value: this.addItem.value // 规格值名称
+                id: res.data.id,
+                name: name // 规格值名称
               })
-              this.updateData(index, info[0].list.length - 1, res.data.childId)
+              this.updateData(index, res.data.id)
+            } else {
+              info[0].list.push({
+                id: res.data.id,
+                name: name // 规格值名称
+              })
+              this.addData(res.data.id)
             }
           } else {
             this.specList.push({
               id: res.data.id, // 预留项，设计中添加即上传服务器并创建
-              name: this.addItem.name, // 规格名称
-              list: [{
-                id: res.data.childId,
-                value: this.addItem.value // 规格值名称
-              }]
+              name: name, // 规格名称
+              list: []
             })
             this.addItem = {
               add: false,
-              name: '',
-              value: ''
+              name: ''
             }
-            this.addData(res.data.childId)
+            // this.addData(res.data.id)
           }
+          callback && callback()
         }).catch((e) => {
         })
       },
@@ -495,21 +485,13 @@
           this.$message('规格值添加异常')
           return
         }
-        const child = info.list.filter(o => o.value === this.childItem.value)
+        const child = info.list.filter(o => o.name === this.childItem.name)
         if (child.length) {
           this.$message('请注意，已有该规格')
         }
-        this.saveSpec({
-          name: info.name,
-          child: this.childItem[index]
-        }).then((res) => {
-          info.list.push({
-            id: res.data.childId,
-            value: this.childItem[index]
-          })
+        this.addSpec({ name: this.childItem[index], id: info.id, callback: () => {
           this.childItem[index] = ''
-          this.updateData(index, res.data.childId)
-        })
+        } })
       },
       // 删除规格值
       delSpecValue(key, index) {
@@ -602,18 +584,38 @@
       },
       // 设置商品规格
       setSpecList(list) {
+        this.specList = list
       },
       // 设置商品信息
       setProduct(list) {},
       // 获得列表规格数据
       getSpecList() {
-        this.showData.spec = this.specList
         return this.specList
       },
-      // 获取最终产品数据，没有绑定在v-model上，开销太大
+      // 获取最终产品数据
       getProductSpec() {
-        this.showData.product = this.productSpec
         return this.productSpec
+      },
+      // 更新数据
+      updateValue() {
+        this.defaultChange = true
+        if (this.moreSpec) {
+          this.$emit('input', this.productSpec)
+        } else {
+          this.$emit('input', this.formItem)
+        }
+      },
+      refresh() {
+        this.defaultChange = true
+        if (this.value.length && this.value[0].attr === '0') {
+          this.moreSpec = false
+          this.formItem = {
+            ...this.value[0]
+          }
+        } else {
+          this.moreSpec = true
+          this.productSpec = this.value
+        }
       }
     }
   }
@@ -624,4 +626,5 @@
     list-style: none;
   }
   .more-spec{border:1px solid #f5f5f5;}
+  #priceByAttr {padding: 20px;}
 </style>

@@ -1,5 +1,11 @@
+import app from './app'
+export const state = () => ({
+})
+export const getters = {
+}
 export const mutations = {
-  SET_LANG (state, todo) {
-    state.modules.app.locale = todo
-  }
+  ...app.mutations
+}
+export const actions = {
+  ...app.actions
 }

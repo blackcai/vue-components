@@ -2,43 +2,75 @@
   <div class="image-container">
     <div class="image-upload-only">
       <div tabindex="0" class="el-upload el-upload--text" @click="visible = true">
-        <img v-if="value" :src="value" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        <div class="el-loading-mask" v-if="value">
+        <img v-if="obj && obj[valueProp['value']]" :src="obj[valueProp['value']]" class="avatar" :style="{height: `${size}px`, width: `${size}px`}">
+        <i v-else class="el-icon-plus avatar-uploader-icon" :style="{height: `${size}px`, width: `${size}px`, lineHeight: `${size}px`}"></i>
+        <div v-if="obj && obj[valueProp['value']]" class="el-loading-mask">
           <i class="close el-icon-delete" @click.stop="deleted"></i>
         </div>
       </div>
     </div>
-    <image-dialog :visible.sync="visible" :limit="1" @change="selectImage" />
+    <image-dialog :visible.sync="visible" :max="1" @change="selectImage" />
   </div>
 </template>
 
 <script>
-import ImageDialog from '@/components/Image/index.vue'
+import ImageDialog from '@/components/image/index.vue'
 
 export default {
   name: 'OnlyImage',
   components: { ImageDialog },
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
+    },
+    image: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    valueProp: {
+      type: Object,
+      default: () => {
+        return {
+          value: 'src'
+        }
+      }
+    },
+    size: {
+      type: Number,
+      default: 100
     }
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      obj: null
     }
   },
   created() {
   },
   methods: {
     deleted() {
-      this.$emit('input', '')
+      this.obj = null
+      this.$emit('input', null)
     },
     selectImage(item) {
       if (item.length) {
-        this.$emit('input', item[0].imgBig)
+        this.obj = {
+          ...item[0]
+        }
+        this.$emit('input', item[0].id)
+      }
+    }
+  },
+  watch: {
+    image(n) {
+      if (n.src) {
+        this.obj = {
+          src: n.src
+        }
       }
     }
   }
@@ -59,16 +91,11 @@ export default {
       border-color: #409EFF;
     }
     .avatar-uploader-icon {
-      font-size: 28px;
+      font-size: 50%;
       color: #8c939d;
-      width: 100px;
-      height: 100px;
-      line-height: 100px;
       text-align: center;
     }
     .avatar {
-      width: 100px;
-      height: 100px;
       display: block;
     }
     .el-loading-mask{display: none;

@@ -7,9 +7,20 @@
             <div>{{ item.name }}<el-tag size="mini" v-if="item.not">转载</el-tag> <span class="time">{{ item.time }}</span></div>
           </el-col>
           <el-col :span="12" class="text-right">
+            <template v-for="(c, j) in item.image">
+              {{ c.name }}：
+              <el-image :key="j"
+                        style="width: 30px; height: 30px"
+                        :src="c.src" :alt="c.name"
+                        :preview-src-list="[c.src]">
+              </el-image>
+            </template>
             <a v-if="item.code" :href="item.code" target="_blank">查看源码</a>
-            <el-button type="text" class="button" @click="goUrl(item.url)">查看</el-button>
+            <el-button type="text" class="button" v-if="item.url" @click="goUrl(item.url)">查看</el-button>
           </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24" v-if="item.msg"><small>说明：{{ item.msg }}</small></el-col>
         </el-row>
       </el-card>
       <div class="" style="padding:20px 0;text-indent: 20px;">可以发送邮件至<a href="mailto:mabumilu@qq.com?subject=插件需求&body=我在找一个插件">我的邮箱</a>提出你的详细需求，我尽所能的给你提供想要的组件。</div>
@@ -24,13 +35,22 @@
     data() {
       return {
         cmpItem: [
-          { name: '一个简易实用的商品sku添加组件', url: 'sku?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/sku', time: '2019-7-27', not: false },
+          { name: '一个简易实用的商品sku添加组件', url: 'sku?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/sku', time: '2019-7-27', not: false, msg: '如需参考真实交互数据，参见：一个api接口' },
           { name: '另一个简易实用的商品sku添加组件', url: 'sku2?version=index', code: 'https://github.com/rossroma/vue-sku', time: '2019-7-27', not: false },
           { name: '上个sku组件的ui改版', url: 'sku2/index2?version=index', code: 'https://github.com/rossroma/vue-sku/tree/refactoring', time: '2019-8-31', not: false },
           { name: '随机密码生成', url: 'random?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/random', time: '2019-7-27', not: false },
           { name: '表格生成器', url: 'table?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/table', time: '2019-7-30', not: false },
           { name: 'jquery-tab切换组件示例', url: 'jquery/tab?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/jquery/tab', time: '2019-10-31', not: false },
-          { name: 'FCC翻译团队邀请（非组件）', url: '', code: 'https://github.com/freeCodeCamp/news-translation', time: '', not: false }
+          { name: '一个api接口（PHP）', url: 'http://shop1.yexiaodan.com', code: 'https://gitee.com/mymcode/tpshop', time: '2019-1-14', not: false, image: [
+            { src: '/image/password.jpg', name: '密码' },
+            { src: '/image/qrcode.jpg', name: '数据库表' }
+          ]},
+          { name: '一个api接口（VUE）', url: 'http://shop1.yexiaodan.com', code: 'https://gitee.com/mymcode/vue-admin-tpshop', time: '2019-1-14', not: false, image: [
+            { src: '/image/password.jpg', name: '密码' },
+            { src: '/image/qrcode.jpg', name: '数据库表' }
+          ]},
+          { name: '弹窗式图片及分类管理', url: '', code: '', time: '2019-1-14', not: false, msg: '参见：一个api接口的文件管理' },
+          { name: 'FCC翻译团队邀请（非组件）', url: 'https://github.com/freeCodeCamp/news-translation', code: '', time: '', not: false }
         ]
       }
     },
@@ -38,7 +58,11 @@
     },
     methods: {
       goUrl(url) {
-        this.$router.push(url)
+        if (url.indexOf('http') !== -1) {
+          location.href = url
+        } else {
+          this.$router.push(url)
+        }
       }
     }
   }

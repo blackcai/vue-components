@@ -1,8 +1,7 @@
 const pkg = require('./package')
 const { resolve } = require('path')
-
 module.exports = {
-  // mode: 'spa',
+  mode: 'spa',
   /*
   ** Headers of the page
 
@@ -40,6 +39,7 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/prototype',
+    '@/plugins/request'
   ],
 
   /*

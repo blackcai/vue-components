@@ -1,12 +1,12 @@
 <template>
   <div class="image-container">
     <el-button type="primary" size="mini" @click="visible = true">{{ btn }}</el-button>
-    <image-dialog :visible.sync="visible" :limit="10" @change="selectImage" />
+    <image-dialog :visible.sync="visible" :max="max" @change="selectImage" />
   </div>
 </template>
 
 <script>
-import ImageDialog from '@/components/Image/index.vue'
+import ImageDialog from '@/components/image/index.vue'
 
 export default {
   name: 'BtnImage',
@@ -15,6 +15,10 @@ export default {
     btn: {
       type: String,
       default: '选择图片'
+    },
+    max: {
+      type: Number,
+      default: 5
     }
   },
   data() {
@@ -28,15 +32,7 @@ export default {
   methods: {
     // 选择了图片
     selectImage(item) {
-      const imageList = []
-      item.forEach((value) => {
-        imageList.push(value.imgBig)
-      })
-      this.$emit('change', imageList)
-      this.close()
-    },
-    close() {
-      this.$emit('close')
+      this.$emit('change', item)
     }
   }
 }
