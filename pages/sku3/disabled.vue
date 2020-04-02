@@ -3,7 +3,7 @@
     <div v-for="(item, index) in specsGroupDtos" :key="index">
       <div>
         <div>{{ item.name }}</div>
-        <el-button v-for="(child, j) in item.specsValues" size="mini" :key="j" :type="specsSelect[index] === child ? 'primary' : ''" @click="tapSpec(child, index)">{{ child }}-{{ specsPos[index][j] }}</el-button>
+        <el-button v-for="(child, j) in item.specsValues" size="mini" :key="j" :type="specsSelect[index] === child ? 'primary' : ''" @click="tapSpec(child, index)">{{ child }}</el-button>
       </div>
     </div>
     <div>库存：{{ specsDot }}</div>
@@ -11,16 +11,15 @@
 </template>
 
 <script>
-  // 按钮禁用
+  // 选中项可以去除
   export default {
     name: 'Sku3',
     data() {
       return {
         specsGroupDtos: [], // 规格列表
         specsValueDtos: [], // 商品规格数据
-        specsSelect: ['', '', ''], // 已选规格
-        specsDot: 0, // 库存
-        specsPos: [] // sku库存信息
+        specsSelect: [], // 已选规格
+        specsDot: 0 // 库存
       }
     },
     created() {
@@ -78,9 +77,6 @@
       setDot(index) {
         // 设置显示的剩余库存
         // 组装规格名称
-        let skuName = '' // 名称
-        let flag = false // 是否进入了 fn
-        let pos = []
         const fn = (value, idx) => {
           let specName = value
           if (this.specsSelect[idx]) {
@@ -88,62 +84,38 @@
             let name = specName ? `${specName},${this.specsSelect[idx]}` : this.specsSelect[idx]
             if (idx === this.specsGroupDtos.length - 1) {
               // 如果已经是最后一项了
-              this.setDisabled()
-              this.changeDot(name, pos, true)
-              pos.splice(this.specsGroupDtos.length - 1, 1)
+              this.changeDot(name, true)
             } else {
               fn(name, idx + 1)
             }
           } else {
             this.specsGroupDtos[idx].specsValues.forEach((val, k) => {
               let name = specName ? `${specName},${val}` : val
-              pos[idx] = k
               if (idx === this.specsGroupDtos.length - 1) {
                 // 如果已经是最后一项了
-                this.setDisabled()
-                this.changeDot(name, pos, true)
-                pos.splice(this.specsGroupDtos.length - 1, 1)
+                this.changeDot(name, true)
               } else {
                 fn(name, idx + 1)
               }
             })
           }
         }
-        fn(skuName, 0)
-        // for (let i = 0; i < this.specsSelect.length; i++) {
-        //   const value = this.specsSelect[i]
-        //   if (value) {
-        //     // 如果存在值则直接跳过
-        //     skuName = skuName ? `${skuName},${value}` : value
-        //   } else {
-        //     // 如果没有值则循环处理
-        //     // 如果进入了 fn 将跳出循环
-        //     flag = true
-        //     fn(skuName, i)
-        //     break
-        //   }
-        // }
-        !flag && this.changeDot(skuName)
+        fn('', 0)
       },
-      changeDot(value, pos, status) {
-        console.log('pos', pos)
+      changeDot(value, status) {
         // 直接改变库存数量
         const specInfo = this.specsValueDtos.filter(o => o.propvalids.replace(/\s*/g,"") === value.replace(/\s*/g,""))
         if (specInfo.length) {
-          pos.forEach((v, i) => {
-            console.log('v', v)
-            this.$set(this.specsPos, i, [])
-            this.$set(this.specsPos, [i][v], specInfo[0].skuStock === 0)
-          })
           if (status) {
             this.specsDot += specInfo[0].skuStock
           } else {
             this.specsDot = specInfo[0].skuStock
           }
-          console.log(this.specsPos)
         }
       },
-      setDisabled() {}
+      setDisabled() {
+        // 处理库存
+      }
     },
     computed: {
     }
