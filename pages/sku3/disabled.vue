@@ -3,7 +3,7 @@
     <div v-for="(item, index) in specsGroupDtos" :key="index">
       <div>
         <div>{{ item.name }}</div>
-        <el-button v-for="(child, j) in item.specsValues" size="mini" :key="j" :type="specsSelect[index] === child ? 'primary' : ''" @click="tapSpec(child, index)">{{ child }}</el-button>
+        <el-button v-for="(child, j) in item.specsValues" size="mini" :key="j" :type="specsSelect[index] === child ? 'primary' : ''" @click="tapSpec(child, index)">{{ child }}{{ specsStatus[index][j] }}</el-button>
       </div>
     </div>
     <div>库存：{{ specsDot }}</div>
@@ -19,7 +19,8 @@
         specsGroupDtos: [], // 规格列表
         specsValueDtos: [], // 商品规格数据
         specsSelect: [], // 已选规格
-        specsDot: 0 // 库存
+        specsDot: 0, // 库存
+        specsStatus: [] // 状态
       }
     },
     created() {
@@ -47,7 +48,7 @@
         let num = 0
         const fn = (value, index) => {
           if (specsGroupDtos.length - 1 === index) {
-            const n = Math.floor(Math.random() * 200)
+            const n = Math.floor(Math.random() * 2)
             this.specsValueDtos.push({
               specCode: 490,
               propvalids: `${value}`,
@@ -67,12 +68,14 @@
         })
         console.log('总库存：', num)
         this.setDot()
+        this.setDisabled()
       },
       tapSpec(name, index) {
         this.$set(this.specsSelect, index, this.specsSelect[index] === name ? '' : name)
         // if (this.specsSelect.length !== this.specsGroupDtos.length) return
         this.specsDot = 0
         this.setDot(index)
+        this.setDisabled()
       },
       setDot(index) {
         // 设置显示的剩余库存
@@ -114,7 +117,56 @@
         }
       },
       setDisabled() {
-        // 处理库存
+        const parent = this.specsGroupDtos
+        const childName = 'specsValues'
+        const lst = []
+        let total = 0
+        const fn = (value, pindex) => {
+          let specName = value || ''
+          let idx = pindex || 0
+          if (lst[idx]) {
+            // 如果有值
+            let name = specName ? `${specName},${lst[idx]}` : lst[idx]
+            if (idx === this.specsGroupDtos.length - 1) {
+              // 如果已经是最后一项了
+              total += this.getGoods(name)
+            } else {
+              fn(name, idx + 1)
+            }
+          } else {
+            this.specsGroupDtos[idx].specsValues.forEach((val, k) => {
+              let name = specName ? `${specName},${val}` : val
+              if (idx === this.specsGroupDtos.length - 1) {
+                // 如果已经是最后一项了
+                total += this.getGoods(name)
+              } else {
+                fn(name, idx + 1)
+              }
+            })
+          }
+        }
+        parent.forEach((value, index) => {
+          this.specsStatus[index] = []
+          value[childName].forEach((value2, index2) => {
+            total = 0
+            if (!this.specsSelect[index]) {
+              lst[index] = value2
+              fn()
+              this.specsStatus[index][index2] = total
+            }
+          })
+          lst[index] = ''
+        })
+      },
+      getStock(name, index) {},
+      getGoods(value) {
+        console.log(value)
+        // 获得对应的sku信息
+        const specInfo = this.specsValueDtos.filter(o => o.propvalids.replace(/\s*/g,"") === value.replace(/\s*/g,""))
+        if (specInfo.length) {
+          return specInfo[0].skuStock
+        }
+        return 0
       }
     },
     computed: {

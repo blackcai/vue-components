@@ -26,20 +26,20 @@
       }
     },
     mounted() {
-      setInterval(() => {
-        if (!this.start) {
-          this.time = 10
-          this.start = !this.start
-        } else {
-          if (this.time) {
-            this.time --
-            if (!this.time) {
-              location.href = '/'
-            }
-          }
-        }
-
-      }, 1000)
+      // setInterval(() => {
+      //   if (!this.start) {
+      //     this.time = 10
+      //     this.start = !this.start
+      //   } else {
+      //     if (this.time) {
+      //       this.time --
+      //       if (!this.time) {
+      //         location.href = '/'
+      //       }
+      //     }
+      //   }
+      //
+      // }, 1000)
     }
   }
 </script>
