@@ -1,6 +1,6 @@
 <template>
     <el-card>
-      <div slot="header">云服务器推广</div>
+      <div slot="header">广告之后更精彩</div>
       <template v-for="(item, index) in tuiguang">
         <div v-for="(child, j) in item">
           <a :href="child.src">{{ child.name }}</a>

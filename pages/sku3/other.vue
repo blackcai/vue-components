@@ -5,7 +5,8 @@
         <p>{{ProductItem.name}}</p>
         <ul class="product-footerlist clearfix">
           <li v-for="(oItem,index) in ProductItem.item" v-on:click="specificationBtn(oItem.name,n,$event,index)"
-              v-bind:class="[oItem.isShow?'':'noneActive',subIndex[n] == index?'productActive':'']">{{oItem.name}}</li>
+              v-bind:class="[oItem.isShow?'':'noneActive',subIndex[n] == index?'productActive':'']">{{oItem.name}}
+          </li>
         </ul>
       </div>
     </div>
@@ -21,67 +22,8 @@
     data() {
       return {
         simulatedDATA: { //模拟后台返回的数据 多规格
-          "difference": [{ //所有的规格可能情况都在这个数组里
-            "id": "19",
-            "price": "200.00",
-            "stock": "19",
-            "difference": "100,白色"
-          },
-            {
-              "id": "20",
-              "price": "300.00",
-              "stock": "29",
-              "difference": "200,白色"
-            },
-            {
-              "id": "21",
-              "price": "300.00",
-              "stock": "10",
-              "difference": "100,黑丝"
-            },
-            {
-              "id": "22",
-              "price": "300.00",
-              "stock": "0",
-              "difference": "200,黑丝"
-            },
-            {
-              "id": "23",
-              "price": "500.00",
-              "stock": "48",
-              "difference": "100,绿色"
-            },
-            {
-              "id": "24",
-              "price": "500.00",
-              "stock": "0",
-              "difference": "200,绿色"
-            }
-          ],
-          "specifications": [{ //这里是要被渲染字段
-            "name": "尺寸",
-            "item": [{
-              "name": "100",
-            },
-              {
-                "name": "200",
-              }
-            ]
-          },
-            {
-              "name": "颜色",
-              "item": [{
-                "name": "白色",
-              },
-                {
-                  "name": "黑丝",
-                },
-                {
-                  "name": "绿色",
-                }
-              ]
-            }
-          ]
+          difference: [],
+          specifications: []
         },
         selectArr: [], //存放被选中的值
         shopItemInfo: {}, //存放要和选中的值进行匹配的数据
@@ -89,8 +31,9 @@
       }
     },
     created: function () {
-      var self = this;
-      for (var i in self.simulatedDATA.difference) {
+      const self = this;
+      this.createData()
+      for (let i in self.simulatedDATA.difference) {
         self.shopItemInfo[self.simulatedDATA.difference[i].difference] = self.simulatedDATA.difference[
           i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
       }
@@ -100,8 +43,59 @@
 
     },
     methods: {
+      createData() {
+        // 创造虚拟的数据
+        const specsGroupDtos = [
+          {
+            name: '规格',
+            specsValues: ['s', 'm', 'l', 'xl', 'xxl']
+          },
+          {
+            name: '颜色',
+            specsValues: ['赤', '橙', '黄', '绿', '蓝']
+          },
+          {
+            name: '版式',
+            specsValues: ['非主流', '杀马特', '洗剪吹']
+          }
+        ]
+       specsGroupDtos.forEach((value, index) => {
+          this.simulatedDATA.specifications[index] = {
+            name: value.name,
+            item: []
+          }
+          value.specsValues.forEach((value2, index2) => {
+            this.simulatedDATA.specifications[index].item.push({
+              name: value2
+            })
+          })
+       })
+
+        let num = 0
+        const fn = (value, index) => {
+          if (specsGroupDtos.length - 1 === index) {
+            const n = Math.floor(Math.random() * 1.1)
+            this.simulatedDATA.difference.push({
+              id: Math.floor(Math.random() * 100000),
+              price: 179.00 * index,
+              stock: n,
+              difference: `${value}`
+            })
+            num += n
+          } else {
+            specsGroupDtos[index + 1].specsValues.forEach((v, j) => {
+              fn(`${value},${v}`, index + 1)
+            })
+          }
+        }
+        specsGroupDtos[0].specsValues.forEach((value, index) => {
+          fn(value, 0)
+        })
+        this.goodsNum = num
+        console.log('总库存：', num)
+      },
       specificationBtn: function (item, n, event, index) {
-        var self = this;
+        const self = this;
         if (self.selectArr[n] != item) {
           self.selectArr[n] = item;
           self.subIndex[n] = index;
@@ -113,15 +107,15 @@
         self.checkItem();
       },
       checkItem: function () {
-        var self = this;
-        var option = self.simulatedDATA.specifications;
-        var result = []; //定义数组存储被选中的值
-        for (var i in option) {
+        const self = this;
+        const option = self.simulatedDATA.specifications;
+        const result = []; //定义数组存储被选中的值
+        for (let i in option) {
           result[i] = self.selectArr[i] ? self.selectArr[i] : '';
         }
-        for (var i in option) {
-          var last = result[i]; //把选中的值存放到字符串last去
-          for (var k in option[i].item) {
+        for (let i in option) {
+          const last = result[i]; //把选中的值存放到字符串last去
+          for (let k in option[i].item) {
             result[i] = option[i].item[k].name; //赋值，存在直接覆盖，不存在往里面添加name值
             option[i].item[k].isShow = self.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
           }
@@ -131,7 +125,7 @@
         self.$forceUpdate(); //重绘
       },
       isMay: function (result) {
-        for (var i in result) {
+        for (let i in result) {
           if (result[i] == '') {
             return true; //如果数组里有为空的值，那直接返回true
           }
