@@ -15,7 +15,7 @@
       <div>说明</div>
       <div>当前页面的组件逻辑模块是百度找的。</div>
       <div>其它几个类型：
-        <a href="/sku3/other">当前页面组件的初始状态</a>|
+        <!--<a href="/sku3/other">当前页面组件的初始状态</a>|-->
         <a href="/sku3/default">基础功能</a>|
         <a href="/sku3/remove">可以取消选中</a>
       </div>
