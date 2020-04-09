@@ -14,6 +14,7 @@
   // 默认有选中项，且无法取消
   export default {
     name: 'Sku3',
+    layout: 'bar',
     data() {
       return {
         specsGroupDtos: [], // 规格列表

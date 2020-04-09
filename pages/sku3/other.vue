@@ -19,6 +19,7 @@
 <script>
   export default {
     name: 'other',
+    layout: 'bar',
     data() {
       return {
         simulatedDATA: { //模拟后台返回的数据 多规格
