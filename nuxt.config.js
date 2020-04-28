@@ -39,7 +39,8 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/prototype',
-    '@/plugins/request'
+    '@/plugins/request',
+    '@/plugins/svg'
   ],
 
   /*

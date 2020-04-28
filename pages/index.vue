@@ -51,6 +51,7 @@
             { src: '/image/qrcode.jpg', name: '数据库表' }
           ]},
           { name: '弹窗式图片及分类管理', url: '', code: '', time: '2019-1-14', not: false, msg: '参见：一个api接口的文件管理' },
+          { name: '拖拽式模块管理', url: 'detailModule', code: '', time: '2020-4-27', not: false, msg: '一个可拖拽的详情模块管理' },
           { name: 'FCC翻译团队邀请（非组件）', url: 'https://github.com/freeCodeCamp/news-translation', code: '', time: '', not: false }
         ]
       }
