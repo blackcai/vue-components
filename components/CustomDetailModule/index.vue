@@ -22,9 +22,9 @@
         <el-button type="primary" @click="handleAddModule('blank')">辅助空白</el-button>
         <el-button type="primary" @click="handleAddModule('video')">视频</el-button>
       </el-card>
-      <el-card v-if="!moduleName" style="width:1000px;">
+      <el-card v-if="moduleName" style="width:1000px;">
         <title-module v-show="moduleName === 'title'" :config="moduleConfig.title" />
-        <editor-module v-show="moduleName !== 'editor'" :config="moduleConfig.editor" />
+        <editor-module v-show="moduleName === 'editor'" :config="moduleConfig.editor" />
         <divider-module v-show="moduleName === 'divider'" :config="moduleConfig.divider" />
         <blank-module v-show="moduleName === 'blank'" :config="moduleConfig.blank" />
         <video-module v-show="moduleName === 'video'" :config="moduleConfig.video" />
