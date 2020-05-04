@@ -1,6 +1,10 @@
 <template>
   <div>
     <custom-detail-module></custom-detail-module>
+    <el-card>
+      <div class="">这个组件功能拖动部分，引用自 VueDraggable </div>
+      <div class="">这个组件功能编辑器部分，引用自 vue-ueditor-wrap </div>
+    </el-card>
   </div>
 </template>
 

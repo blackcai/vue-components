@@ -1,6 +1,6 @@
 <template>
   <div>
-    <script ref="script" :name="name" type="text/plain"></script>
+    <script ref="script" :name="name" type="text/plain" />
   </div>
 </template>
 
@@ -19,16 +19,6 @@ export default {
         UEDITOR_HOME_URL: process.env.BASE_URL ? process.env.BASE_URL + '/ueditor/' : '/ueditor/',
         enableAutoSave: false
       }
-    }
-  },
-  head() {
-    return {
-      script: [
-        { src: '/ueditor/ueditor.config.js', type: 'text/javascript' },
-        { src: '/ueditor/ueditor.all.js', type: 'text/javascript' },
-        { src: '/ueditor/ueditor.parse.js', type: 'text/javascript' },
-        { src: '/ueditor/lang/zh-cn/zh-cn.js', type: 'text/javascript' },
-      ]
     }
   },
   props: {
@@ -92,6 +82,14 @@ export default {
       default: false
     }
   },
+  mounted() {
+    const timer = setInterval(() => {
+      if (window.UE) {
+        this._initEditor()
+        clearInterval(timer)
+      }
+    }, 100)
+  },
   computed: {
     mixedConfig() {
       return Object.assign({}, this.defaultConfig, this.config)
@@ -130,6 +128,7 @@ export default {
     // 实例化编辑器
     _initEditor() {
       window.onload = () => {
+        console.log('load')
         this.$refs.script.id = this.id = 'editor_' + Math.random().toString(16).slice(-6) // 这么做是为了支持 Vue SSR，因为如果把 id 属性放在 data 里会导致服务端和客户端分别计算该属性的值，而造成 id 不匹配无法初始化的 BUG
         this.init()
         this.$emit('beforeInit', this.id, this.mixedConfig)
