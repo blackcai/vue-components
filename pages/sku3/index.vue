@@ -75,7 +75,7 @@
         let num = 0
         const fn = (value, index) => {
           if (specsGroupDtos.length - 1 === index) {
-            const n = Math.floor(Math.random() * 200)
+            const n = Math.floor(Math.random() * 5)
             this.specsValueDtos.push({
               specCode: 490,
               propvalids: `${value}`,
