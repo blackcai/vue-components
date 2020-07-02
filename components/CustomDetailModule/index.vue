@@ -200,6 +200,21 @@
             console.log(e)
           }
         }
+      },
+      getHtml() {
+        // 生成对应的html
+        let html = ''
+        const editor = (item) => {
+          // 生成
+          html += `<div style="padding:${item.padding}px"><div>${item.value}</div></div>`
+        }
+        this.moduleList.forEach((value, index) => {
+          console.log(value)
+          if (value.module === 'editor') {
+            editor(value)
+          }
+        })
+        return html
       }
     }
   }
