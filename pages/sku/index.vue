@@ -38,7 +38,7 @@
                 <span>{{ item.name }}</span>
               </div>
               <div class="text item">
-                <el-tag v-for="(child, j) in item.list" :key="j" closable @close="delSpecValue(index, j)" size="small">{{ child.name }}</el-tag>
+                <el-tag v-for="(child, j) in item.list" :key="j" closable @close="delSpecValue(index, j)" size="small">{{ child.name }}/{{ child.id }}</el-tag>
                 <el-input v-model="childItem[index]" size="mini" placeholder="请输入规格值" style="width:200px;" @keyup.enter.native="addChildSpec(index)">
                   <el-button slot="append" icon="el-icon-plus" @click="addChildSpec(index, item)">添加</el-button>
                 </el-input>
@@ -178,7 +178,7 @@
         moreSpec: false, // 多规格
         factImgUrl: [],
         defaultChange: false, // 防止多次触发watch
-        sqlData: []
+        sqlData: [] // 用来模拟存储
       }
     },
     watch: {
@@ -210,48 +210,32 @@
     },
     methods: {
       saveSpec({ name = '', id = '' } = {}) {
-        console.log(name, id)
+        /*
+        * 模拟数据存储，这里做的比较简易，没有验证重复规格等
+        * name 规格或子级名称
+        * 规格的 id
+        * */
         return new Promise((resolve, reject) => {
           // 没有数据
-          if (name === '' || id === '') {
-            throw Error('添加错误')
-            return
-          }
-          // 如果有id则代表添加，没有则表示删除
-          if (id) {
-            this.sqlData.forEach((value, index) => {
-              if (value.id === id) {
-                // 取得父数据
-                this.sqlData[index].list.push({
-                  id: value.list.length || 1,
-                  value: name
-                })
-                resolve({
-                  code: 200,
-                  data: {
-                    id: value.list.length || 1,
-                    value: name
-                  },
-                  message: '添加成功'
-                })
-              }
-            })
-          } else {
+          try {
             this.sqlData.push({
-              id: this.sqlData.length || 1,
-              value: name,
-              list: []
+              id: this.sqlData.length + 1,
+              value: name
             })
             resolve({
               code: 200,
               data: {
-                id: this.sqlData.length || 1,
-                value: name
+                id: this.sqlData.length
               },
               message: '添加成功'
             })
+          } catch (e) {
+            reject({
+              code: 400,
+              data: null,
+              message: '添加失败'
+            })
           }
-          reject()
         })
       },
       // 创建新的数据
@@ -500,7 +484,7 @@
         // 如果list只有一个，则替换并删除父级规格，如果有多个则删除
         if (list.length > 1) {
           for (let i = 0; i < this.productSpec.length; i++) {
-            const attr = this.productSpec[i].attr.split('_')
+            const attr = this.specList.length > 1 ? this.productSpec[i].attr.split('_') : [this.productSpec[i].attr]
             if (attr.includes(id)) {
               this.productSpec.splice(i, 1)
               --i
@@ -510,9 +494,11 @@
           this.specList[key].list.splice(index, 1)
         } else {
           for (let i = 0; i < this.productSpec.length; i++) {
-            const attr = this.productSpec[i].attr.split('_')
+            const attr = this.specList.length > 1 ? this.productSpec[i].attr.split('_') : [this.productSpec[i].attr]
             if (attr.includes(id)) {
-              attr.remove(id)
+//              attr.remove(id)
+              // 去处数组中的 id
+              attr.splice(attr.indexOf(id), 1)
               let newSku = ''
               attr.forEach((value, j) => {
                 if (j > 0) {
