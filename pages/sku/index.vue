@@ -611,6 +611,7 @@
   *{
     list-style: none;
   }
+  .more-spec,.only-spec{margin-top:10px;}
   .more-spec{border:1px solid #f5f5f5;}
   #priceByAttr {padding: 20px;}
 </style>

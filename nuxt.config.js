@@ -7,7 +7,7 @@ module.exports = {
 
   */
   head: {
-    title: "组件库，为快捷开发而生",
+    title: "小组件",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes' },
