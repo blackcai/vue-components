@@ -71,7 +71,13 @@
           {
             name: '代码片段',
             list: [
-              { name: 'extend 对象合并', url: 'extend?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/extend/index', time: '2020-12-3', not: false}
+              { name: 'extend 对象合并', url: 'extend?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/extend', time: '2020-12-3', not: false, msg: '这个方法来自 swipper' }
+            ]
+          },
+          {
+            name: '特效',
+            list: [
+              { name: '下雨', url: 'rain?version=index', code: 'https://gitee.com/mymcode/vue-component/tree/develop/pages/rain', time: '2020-12-7', not: false, msg: '来自 jq22' }
             ]
           }
         ]

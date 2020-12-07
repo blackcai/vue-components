@@ -121,7 +121,12 @@
       }
       run()
       /*-- 结束 --*/
-      this.bindClick(1)
+      /**
+       * 本地执行环境偶尔会出现 $ 报错的情况
+       * */
+      setTimeout(() => {
+        this.bindClick(1)
+      }, 2000)
     }
   }
 </script>
