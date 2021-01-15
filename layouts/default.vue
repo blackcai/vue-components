@@ -1,4 +1,4 @@
-<template>
+n<template>
   <div class="default-layout">
     <nuxt />
   </div>

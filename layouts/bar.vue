@@ -3,6 +3,7 @@
     <header-wrap></header-wrap>
     <nuxt/>
     <tdd-card></tdd-card>
+    <footer-box></footer-box>
   </div>
 </template>
 
@@ -26,6 +27,9 @@
       },
       TddCard: resolve => {
         return require(['@/components/tdd/index.vue'], resolve)
+      },
+      FooterBox: resolve => {
+        return require(['@/components/Footer/index.vue'], resolve)
       }
     }
   }

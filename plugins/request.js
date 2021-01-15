@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Loading } from 'element-ui'
+import { Loading, Notification } from 'element-ui'
 const requestItem = {
   store: null,
   loading: null, // loading显示
@@ -46,9 +46,9 @@ export default function({ app, store }) {
         })
       }
       // Do something before request is sent
-      if (requestItem.store.getters.token) {
-        config.headers['http-token'] = `${requestItem.store.getters.token}` // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      }
+      // if (requestItem.store.getters.token) {
+        config.headers['authorization'] = '' // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+      // }
       return config
     },
     error => {
@@ -67,6 +67,7 @@ export default function({ app, store }) {
       return response.data
     },
     error => {
+      console.log(error.response)
       loadClose()
       requestItem.store.dispatch('ChangeRequest', false)
       if (error.response && error.response.status === 401) {
@@ -75,6 +76,10 @@ export default function({ app, store }) {
         requestItem.store.dispatch('clearInfo')
         return Promise.reject(error)
       }
+      Notification({
+        type: 'error',
+        title: error.response.data.message || '系统出错'
+      })
       return Promise.reject(error)
     }
   )
