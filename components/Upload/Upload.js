@@ -26,7 +26,8 @@ class FileUpload {
         width: 0, // 当精准的时候，只用这个，如果是范围，则表示最小宽度
         height: 0, // 当精准的时候，只用这个，如果是范围，则表示最小高度
         maxWidth: 0,
-        maxHeight: 0
+        maxHeight: 0,
+        result: false // 是否需要获取图片的信息，如宽高等
       },
       /**
        * 当为 false 的时候，不做验证
@@ -145,13 +146,20 @@ class FileUpload {
     }
     return true
   }
-  _createFormData(file) {
+  _createFormData(files) {
     /**
      * 创建表单信息
      * 参数根据自身需要设置
      * */
+    const isMultiple = this.getType(files) === '[object Array]'
     const formData = new FormData()
-    formData.append('file[0]', file)
+    if (isMultiple) {
+      files.forEach((file, index) => {
+        formData.append(`file[${index}]`, file)
+      })
+    } else {
+      formData.append('file[0]', files)
+    }
     return formData
   }
   _getImageBaseInfo(file, type = 'url') {
@@ -246,7 +254,7 @@ class FileUpload {
               this._callback('success', result)
             })
           } else {
-            this._callback('success', result)
+            this._callback('success', res)
           }
         } else {
           this._callback('fail', res)

@@ -1,8 +1,9 @@
 <template>
   <div>
-    <el-upload class="upload-demo" ref="upload" accept="image/*" name="image" style="display: inline-block;" action="" :limit="1" :show-file-list="false" :http-request="handleUpload" :file-list="fileList" multiple>
+    <el-upload class="upload-demo" ref="upload" accept="image/*" name="image" style="display: inline-block;" action="" :limit="100" :show-file-list="false" :on-change="handleChange" :file-list="fileList" multiple :auto-upload="false">
       <el-button type="primary" plain size="mini" icon="el-icon-plus">上传图片</el-button>
     </el-upload>
+
   </div>
 </template>
 
@@ -12,16 +13,32 @@
     name: 'UploadIndex',
     data() {
       return {
-        fileList: []
+        fileList: [],
+        timer: null
       }
     },
     methods: {
+      handleChange(file, fileList) {
+        console.log(fileList)
+        this.fileList = fileList
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        this.timer = setTimeout(() => {
+          this.handleUpload()
+          clearTimeout(this.timer)
+        }, 100)
+      },
       handleUpload(data) {
-        console.log(data)
-        SingleUpload(data.file, {
+        console.log(data, 'handleUpload')
+        const that = this
+        SingleUpload(this.fileList.map(file => file.raw), {
           success(res) {
             console.log('成功', res)
           }, // 成功回调
+          complete() {
+            that.$refs.upload.clearFiles()
+          }
         })
       }
     }

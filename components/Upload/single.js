@@ -33,6 +33,7 @@ const singleUpload = (files, options) => {
     }, // 失败回调
     complete() {
       loadingProcess && loadingProcess.close()
+      options.complete && options.complete()
     } // 调用完成
   })
   
