@@ -19,6 +19,7 @@
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.17",
     "axios": "0.18.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

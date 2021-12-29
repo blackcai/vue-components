@@ -38,9 +38,3 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
 
-#####更新历史
-2019-8-31
-更新组件：sku2
-添加sku2展示新的UI
-新增防止重复，防止空值报错
-

@@ -22,6 +22,10 @@
         const host = location.host
         if (host === 'www.yexiaodan.com') {
           this.beian = '蜀ICP备17042269号-2'
+        } else if (host === 'www.whitecai.cn') {
+          this.beian = '蜀ICP备15031720号-2'
+        } else if (host === 'www.xiaolanke.com') {
+          this.beian = '蜀ICP备15031720号-4'
         }
       }
     }
